@@ -4,6 +4,7 @@ import { Container, Row, Col } from "reactstrap";
 import ProductCard from "../components/UI/product-card/ProductCard.jsx";
 import { getAllFoods } from "../services/foods.service.js";
 import { getAllCategories } from "../services/foods.service.js";
+import { getImageFromS3 } from "../services/image.service.js";
 import "../styles/home.css";
 
 const Home = () => {
@@ -18,16 +19,13 @@ const Home = () => {
     });
   }
 
-  function getBase64ImageFromS3Path(imagePath) {
-    console.log(imagePath)
-  }
-
-  function changeImagePathOfAllProducts(products) {
-    products.forEach((item) => {
-      item.imagePath = getBase64ImageFromS3Path(item.imagePath);
-    });
-
-    return products;
+  async function changeImagePathOfAllProducts(products) {
+    for (const item of products) {
+      await getImageFromS3(item.imagePath.split('/').pop()).then((res) => {
+        item.imagePath = 'data:image/jpeg;base64,' + res
+      });
+    }
+    setAllProducts(products);
   }
 
   useEffect(() => {
@@ -35,8 +33,7 @@ const Home = () => {
     getAllFoods().then((res) => {
       const products = res.data;
       sortArrayByKey(products, "categoryId");
-      const getArrangedProducts = changeImagePathOfAllProducts(products);
-      setAllProducts(getArrangedProducts);
+      changeImagePathOfAllProducts(products);
     });
 
     getAllCategories().then((res) => {

@@ -8,4 +8,12 @@ const api = axios.create({
     }
 })
 
+export const S3Api = axios.create({
+    baseURL: 'https://restaurant-api-image.s3.eu-west-2.amazonaws.com/images/',
+    headers: {
+        'Content-Type': 'image/*'
+    },
+    responseType: 'arraybuffer'
+})
+
 export default api

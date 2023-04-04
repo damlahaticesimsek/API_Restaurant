@@ -26,7 +26,7 @@ const ProductCard = (props) => {
     <div className="product__item">
       <div className="product__img">
         <Link to={`/foods/${foodId}`}>
-          <img src={imagePath} alt="product-img" className="w-50" />
+          <img src={imagePath} alt="product-img" className="w-50" style={{objectFit:'contain', width: '100px', height: '100px'}} />
         </Link>
       </div>
 
