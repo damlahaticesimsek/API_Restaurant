@@ -19,10 +19,10 @@
     "remixicon": "^2.5.0"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
-    "test": "react-scripts --openssl-legacy-provider test",
-    "eject": "react-scripts --openssl-legacy-provider eject",
+    "start": "react-scripts start --openssl-legacy-provider",
+    "build": "react-scripts build --openssl-legacy-provider",
+    "test": "react-scripts test--openssl-legacy-provider",
+    "eject": "react-scripts eject --openssl-legacy-provider",
     "prod": "serve -s build -p 8000"
   },
   "eslintConfig": {

@@ -2,54 +2,72 @@ import React, { useState, useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet.js";
 import { Container, Row, Col } from "reactstrap";
 import ProductCard from "../components/UI/product-card/ProductCard.jsx";
-import products from "../assets/fake-data/products.js";
-import foodCategoryImg01 from "../assets/images/hamburger.png";
-import foodCategoryImg02 from "../assets/images/pizza.png";
-import foodCategoryImg03 from "../assets/images/bread.png";
 import { getAllFoods } from "../services/foods.service.js";
+import { getAllCategories } from "../services/foods.service.js";
 import "../styles/home.css";
 
 const Home = () => {
-  const [category, setCategory] = useState("ALL");
-  const [allProducts, setAllProducts] = useState(products);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
+  const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  function sortArrayByKey(array, key) {
+    array.sort((firstElement, secondElement) => {
+      return firstElement[key] - secondElement[key];
+    });
+  }
 
   useEffect(() => {
+    
     getAllFoods().then((res) => {
-      console.log(res.data)
-      //TODO: get items from backend, 
-      // setAllProducts(res.data);
+      setAllProducts(res.data);
+    });
+
+    getAllCategories().then((res) => {
+      const categories = [{ id: 0, categoryName: "ALL" }, ...res.data];
+      sortArrayByKey(categories, "id");
+      setCategories(categories)
     });
   }, []);
 
   useEffect(() => {
-    if (category === "ALL") {
-      setAllProducts(products);
+    if (selectedCategory === "ALL") {
+      setFilteredProducts(allProducts);
     }
 
-    if (category === "BURGER") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Burger"
+    if (selectedCategory === "Drinks") {
+      const filteredProducts = allProducts.filter(
+        (item) => item.categoryId === 1
       );
 
-      setAllProducts(filteredProducts);
+      setFilteredProducts(filteredProducts);
     }
 
-    if (category === "PIZZA") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Pizza"
+    if (selectedCategory === "Meals") {
+      const filteredProducts = allProducts.filter(
+        (item) => item.categoryId === 2
       );
 
-      setAllProducts(filteredProducts);
+      setFilteredProducts(filteredProducts);
     }
 
-    if (category === "BREAD") {
-      const filteredProducts = products.filter(
-        (item) => item.category === "Bread"
+    if (selectedCategory === "Bakery") {
+      const filteredProducts = allProducts.filter(
+        (item) => item.categoryId === 3
       );
 
-      setAllProducts(filteredProducts);
+      setFilteredProducts(filteredProducts);
     }
-  }, [category]);
+
+    if (selectedCategory === "Dessert") {
+      const filteredProducts = allProducts.filter(
+        (item) => item.categoryId === 4
+      );
+
+      setFilteredProducts(filteredProducts);
+    }
+  }, [allProducts, selectedCategory]);
 
   return (
     <Helmet title="Home">
@@ -63,48 +81,22 @@ const Home = () => {
 
             <Col lg="12">
               <div className="food__category d-flex align-items-center justify-content-center gap-4">
-                <button
-                  className={`all__btn  ${
-                    category === "ALL" ? "foodBtnActive" : ""
-                  } `}
-                  onClick={() => setCategory("ALL")}
-                >
-                  All
-                </button>
-                <button
-                  className={`d-flex align-items-center gap-2 ${
-                    category === "BURGER" ? "foodBtnActive" : ""
-                  } `}
-                  onClick={() => setCategory("BURGER")}
-                >
-                  <img src={foodCategoryImg01} alt="" />
-                  Burger
-                </button>
-
-                <button
-                  className={`d-flex align-items-center gap-2 ${
-                    category === "PIZZA" ? "foodBtnActive" : ""
-                  } `}
-                  onClick={() => setCategory("PIZZA")}
-                >
-                  <img src={foodCategoryImg02} alt="" />
-                  Pizza
-                </button>
-
-                <button
-                  className={`d-flex align-items-center gap-2 ${
-                    category === "BREAD" ? "foodBtnActive" : ""
-                  } `}
-                  onClick={() => setCategory("BREAD")}
-                >
-                  <img src={foodCategoryImg03} alt="" />
-                  Bread
-                </button>
+                {categories.map((item) => (
+                  <button 
+                    className={`d-flex align-items-center gap-2`}
+                    onClick={() => setSelectedCategory(item.categoryName)}
+                    key={item.id}
+                  >
+                    <img src={require(`../assets/images/${item.categoryName}.png`).default} alt="" />
+                    {item.categoryName}
+                  </button>
+                ))}
+  
               </div>
             </Col>
 
-            {allProducts.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" key={item.id} className="mt-5">
+            {filteredProducts.map((item) => (
+              <Col lg="3" md="4" sm="6" xs="6" key={item.foodId} className="mt-5">
                 <ProductCard item={item} />
               </Col>
             ))}
