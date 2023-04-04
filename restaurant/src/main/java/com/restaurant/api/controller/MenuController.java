@@ -1,7 +1,6 @@
 package com.restaurant.api.controller;
 
 import com.restaurant.api.dto.*;
-import com.restaurant.api.entity.Food;
 import com.restaurant.api.service.MenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,19 +20,7 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-//    @RequestMapping(value = "/{tableNumber}", method = RequestMethod.GET)
-//    public ResponseEntity<?> searchSerials(@PathVariable Integer tableNumber, @RequestBody SearchSerialRequestDTO request) {
-//
-//        PaginationDTO<List<SearchSerialResponseDTO>> serials = null;
-//        try {
-//            serials = serialService.searchSerials(request, user);
-//        } catch (Exception e) {
-//            logger.error(e.getMessage());
-//            return ResponseEntity.internalServerError().body(new ResponseWrapperBase<>(e.getMessage(), false));
-//        }
-//        return ResponseEntity.ok(new ResponseWrapperPaginated<>(serials));
-//    }
-
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @RequestMapping(value = "/{tableNumber}/getMenu", method = RequestMethod.GET)
     public ResponseEntity<?> getMenu(@PathVariable Integer tableNumber) {
 

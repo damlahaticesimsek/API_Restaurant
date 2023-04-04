@@ -7,17 +7,13 @@ import com.restaurant.api.entity.Food;
 import com.restaurant.api.repository.CategoryRepository;
 import com.restaurant.api.repository.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
 @Service
 public class MenuService {
 
@@ -28,7 +24,6 @@ public class MenuService {
     private CategoryRepository categoryRepository;
 
     public List<GetMenuResponseDTO> getMenu() {
-        corsConfigurationSource();
         List<GetMenuResponseDTO> responseDTOS = new ArrayList<>();
         List<Food> menu = foodRepository.findAll();
 
@@ -39,19 +34,6 @@ public class MenuService {
         }
 
         return responseDTOS;
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(List.of("*"));
-
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
     public List<GetMenuResponseDTO> getMenuByCategory(Integer categoryId) {
