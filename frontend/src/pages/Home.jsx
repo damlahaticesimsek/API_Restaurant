@@ -18,10 +18,25 @@ const Home = () => {
     });
   }
 
+  function getBase64ImageFromS3Path(imagePath) {
+    console.log(imagePath)
+  }
+
+  function changeImagePathOfAllProducts(products) {
+    products.forEach((item) => {
+      item.imagePath = getBase64ImageFromS3Path(item.imagePath);
+    });
+
+    return products;
+  }
+
   useEffect(() => {
     
     getAllFoods().then((res) => {
-      setAllProducts(res.data);
+      const products = res.data;
+      sortArrayByKey(products, "categoryId");
+      const getArrangedProducts = changeImagePathOfAllProducts(products);
+      setAllProducts(getArrangedProducts);
     });
 
     getAllCategories().then((res) => {
@@ -32,41 +47,38 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    let filteredProducts = [];
+
     if (selectedCategory === "ALL") {
-      setFilteredProducts(allProducts);
+      filteredProducts = allProducts;
     }
 
     if (selectedCategory === "Drinks") {
-      const filteredProducts = allProducts.filter(
+      filteredProducts = allProducts.filter(
         (item) => item.categoryId === 1
       );
-
-      setFilteredProducts(filteredProducts);
     }
 
     if (selectedCategory === "Meals") {
-      const filteredProducts = allProducts.filter(
+      filteredProducts = allProducts.filter(
         (item) => item.categoryId === 2
       );
-
-      setFilteredProducts(filteredProducts);
     }
 
     if (selectedCategory === "Bakery") {
-      const filteredProducts = allProducts.filter(
+      filteredProducts = allProducts.filter(
         (item) => item.categoryId === 3
       );
-
-      setFilteredProducts(filteredProducts);
     }
 
     if (selectedCategory === "Dessert") {
-      const filteredProducts = allProducts.filter(
+      filteredProducts = allProducts.filter(
         (item) => item.categoryId === 4
       );
-
-      setFilteredProducts(filteredProducts);
     }
+
+    setFilteredProducts(filteredProducts);
+
   }, [allProducts, selectedCategory]);
 
   return (
