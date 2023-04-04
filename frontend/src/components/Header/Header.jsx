@@ -11,10 +11,10 @@ const nav__links = [
     display: "Home",
     path: "/home",
   },
-  {
-    display: "Foods",
-    path: "/foods",
-  },
+  // {
+  //   display: "Foods",
+  //   path: "/foods",
+  // },
   {
     display: "Cart",
     path: "/cart",
