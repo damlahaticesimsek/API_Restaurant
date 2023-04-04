@@ -1,5 +1,8 @@
 package com.restaurant.api.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.restaurant.api.dto.AddOrderRequestDTO;
 import com.restaurant.api.dto.AddOrderResponseDTO;
 import com.restaurant.api.dto.OrderItemDetailsResponseDTO;
@@ -27,8 +30,12 @@ public class OrderService {
     private OrderItemRepository orderItemRepository;
 
     @Autowired
+    private EmailSenderService emailSenderService;
+
+    @Autowired
     private RestaurantTableRepository restaurantTableRepository;
-    public AddOrderResponseDTO addOrder(Integer tableNumber, List<AddOrderRequestDTO> requestDTO) {
+
+    public AddOrderResponseDTO addOrder(Integer tableNumber, List<AddOrderRequestDTO> requestDTO) throws JsonProcessingException {
         List<OrderItemDetailsResponseDTO> responseDTOS1 = new ArrayList<>();
 
         RestaurantTable restaurantTable = restaurantTableRepository.findOneByTableNumber(tableNumber);
@@ -61,11 +68,27 @@ public class OrderService {
             orderItemRepository.save(orderItem);
         }
 
+        createEmail(restaurantTable.getRestaurant().getRestaurantMail(), tableNumber, requestDTO);
+
         AddOrderResponseDTO responseDTO = new AddOrderResponseDTO();
         responseDTO.setOrderId(order.getId());
         responseDTO.setTotalPrice(totalPrice);
         responseDTO.setOrderItemDetailsResponseDTOS(responseDTOS1);
 
         return responseDTO;
+    }
+
+    private void createEmail(String email, Integer tableNumber, List<AddOrderRequestDTO> requestDTO) throws JsonProcessingException {
+        String subject = "ORDER:Your got an order! ";
+
+        ObjectMapper objectMapper = JsonMapper.builder().build();
+        String orders = objectMapper.writeValueAsString(requestDTO);
+
+        // The HTML body for the email.
+        String htmlBody = "<h1>ORDER:Your got an order! </h1>"
+                + "<p>You got an order from table number: " + tableNumber +". The order is; " + orders +"  </p>";
+
+        emailSenderService.sendEmail(email,htmlBody,subject);
+
     }
 }

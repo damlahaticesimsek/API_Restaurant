@@ -66,4 +66,12 @@ public class RestaurantTable implements Serializable {
     public void setTableActive(Boolean tableActive) {
         this.tableActive = tableActive;
     }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }

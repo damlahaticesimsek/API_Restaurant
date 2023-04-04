@@ -18,6 +18,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @RequestMapping(value = "/{tableNumber}/addOrder", method = RequestMethod.POST)
     public ResponseEntity<?> addOrder(@PathVariable Integer tableNumber, @RequestBody List<AddOrderRequestDTO> requestDTO) {
 

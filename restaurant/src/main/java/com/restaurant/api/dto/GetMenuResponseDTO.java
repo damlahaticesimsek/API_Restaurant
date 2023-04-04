@@ -8,12 +8,14 @@ public class GetMenuResponseDTO {
     private String foodName;
     private Double price;
     private Long categoryId;
+    private String imagePath;
 
     public void importFrom(Food food){
         this.setFoodId(food.getId());
         this.setFoodName(food.getFoodName());
         this.setPrice(food.getPrice());
         this.setCategoryId(food.getCategoryId());
+        this.setImagePath(food.getImagePath());
     }
 
     public Long getFoodId() {
@@ -46,5 +48,13 @@ public class GetMenuResponseDTO {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

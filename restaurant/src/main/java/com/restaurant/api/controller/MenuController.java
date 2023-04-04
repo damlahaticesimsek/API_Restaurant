@@ -35,6 +35,7 @@ public class MenuController {
         return ResponseEntity.ok(new ResponseWrapper<>(serial));
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @RequestMapping(value = "/{tableNumber}/getMenuByCategory/{categoryId}", method = RequestMethod.GET)
     public ResponseEntity<?> getMenuByCategory(@PathVariable Integer tableNumber, @PathVariable Integer categoryId) {
 
@@ -48,6 +49,7 @@ public class MenuController {
         return ResponseEntity.ok(new ResponseWrapper<>(serial));
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @RequestMapping(value = "/{tableNumber}/getCategories", method = RequestMethod.GET)
     public ResponseEntity<?> getCategories(@PathVariable Integer tableNumber) {
 
