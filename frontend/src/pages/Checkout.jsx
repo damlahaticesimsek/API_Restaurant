@@ -13,6 +13,7 @@ const Checkout = () => {
   const [enterCountry, setEnterCountry] = useState("");
   const [enterCity, setEnterCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
+  const [addedDataMessage, setAddedDataMessage] = useState("");
 
   const shippingInfo = [];
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
@@ -47,6 +48,7 @@ const Checkout = () => {
 
     addOrder(items).then((res) => {
       console.log(res);
+      setAddedDataMessage("Order placed successfully")
     });
   };
 
@@ -111,6 +113,7 @@ const Checkout = () => {
                 <button type="submit" className="addTOCart__btn">
                   Payment
                 </button>
+                <p>{addedDataMessage}</p>
               </form>
             </Col>
 
