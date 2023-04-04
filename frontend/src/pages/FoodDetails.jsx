@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import products from "../assets/fake-data/products";
 import { useParams } from "react-router-dom";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
@@ -21,11 +20,11 @@ const FoodDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const product = products.find((product) => product.id === id);
+  const product = [].find((product) => product.id === id);
   const [previewImg, setPreviewImg] = useState(product.image01);
   const { title, price, category, desc, image01 } = product;
 
-  const relatedProduct = products.filter((item) => category === item.category);
+  const relatedProduct = [].filter((item) => category === item.category);
 
   const addItem = () => {
     dispatch(

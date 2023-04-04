@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Container, Row, Col } from "reactstrap";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
-
+import { addOrder } from "../services/order.service";
 import "../styles/checkout.css";
 
 const Checkout = () => {
@@ -16,6 +16,7 @@ const Checkout = () => {
 
   const shippingInfo = [];
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const shippingCost = 30;
 
   const totalAmount = cartTotalAmount + Number(shippingCost);
@@ -32,6 +33,21 @@ const Checkout = () => {
     };
 
     shippingInfo.push(userShippingAddress);
+
+    let items = [];
+    for(const item of cartItems) {
+      const request = {
+        foodId: item.id,
+        quantity: item.quantity,
+        unitPrice: item.price,
+      };
+      
+      items.push(request);
+    }
+
+    addOrder(items).then((res) => {
+      console.log(res);
+    });
   };
 
   return (

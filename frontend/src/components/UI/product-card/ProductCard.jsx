@@ -14,9 +14,9 @@ const ProductCard = (props) => {
   const addToCart = () => {
     dispatch(
       cartActions.addItem({
-        foodId,
-        foodName,
-        imagePath,
+        id: foodId,
+        title: foodName,
+        image01: imagePath,
         price,
       })
     );
